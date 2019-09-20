@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neuedu.mapper.OrderMapper">
+    <resultMap id="orderMap" type="com.neuedu.entity.Order">
+        <id column="order_id" property="orderId"/>
+        <result column="status" property="status"/>
+        <result column="meber_id" property="meberId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <!-- 查询所有订单 -->
+    <select id="allOrder" resultMap="orderMap">
+        select <include refid="all"/> from s_order
+    </select>
+    <!--根据用户id查询订单-->
+    <select id="meberIdOrder" resultMap="orderMap">
+        select <include refid="all"/> from s_order where meber_id = #{meber_id}
+    </select>
+    <insert id="insertOrder">
+        insert into s_order (order_id,status,meber_id) values (#{orderId},#{status},#{meberId})
+    </insert>
+    <!--根据订单id和用户id修改订单-->
+    <update id="orderIdupdateOrder" >
+        update s_order set status = #{status} where order_id =#{orderId}
+    </update>
+    <update id="meberIdupdateOrder">
+        update s_order set status = #{status} where meber_id = #{meberId}
+    </update>
+    <!-- 删除订单(订单id) -->
+    <delete id="orderIddeleteOrder">
+        delete from s_order where order_id = #{orderId}
+    </delete>
+    <!--删除订单(用户id) -->
+    <delete id="meberIddeleteOrder">
+        delete from s_order where meber_id = #{meberId}
+    </delete>
+    <sql id="all">
+        order_id,status,meber_id,create_time,update_time
+    </sql>
+</mapper>
